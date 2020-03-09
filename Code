@@ -1,3 +1,21 @@
 #Python, Machine Learning, KNN, 5-Fold Testing
 #Eddie Lam
 #CISC 4900 Project
+
+#now code for KNN on Tensorflow
+
+#32 columns and 21158 rows for 41 users
+#M='phone ID', A='user ID', B='document ID', 'time[ms]', 'action', 'phone orientation', 
+#'x-coordinate', 'y-coordinate', 'pressure', 'area covered', 'finger orientation'
+
+import sklearn
+from sklearn.utils import shuffle
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import linear_model, preprocessing
+
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+
+data = pd.read_csv("featMat.csv")
+print(data.head())
