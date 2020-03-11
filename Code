@@ -5,12 +5,15 @@
 #now code for KNN on Tensorflow
 
 #34 columns and 21158 rows for 41 users
-
 import sklearn
 from sklearn.utils import shuffle
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import linear_model, preprocessing
 
+#these are to mess around with columns
+from tensorflow import feature_column
+from tensorflow.keras import layers
+from sklearn.model_selection import train_test_split
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import functools
@@ -19,43 +22,41 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 
-
-filename = pd.read_csv("featMatVersion2_1.csv")
-print(filename.head())
+tf.enable_eager_execution()
 
 
+FNdataset = pd.read_csv("featMatVersion2_2.csv")
 
-#34 lables
-column_names = ['User_ID', 'Doc_ID', 'inter-stroke time', 'stroke duration', 'Start X', 'Start Y', 'Stop X', 'Stop Y',
-        'Direct end-to-end distance', 'Mean resultant length', 'Up/Down/Left/Right Flag', 'Direction of end-to-end line', 'Phone_ID',
-        '20% pairwise velocity', '50% pairwise velocity', '80% pairwise velocity', '20% pairwise acc', '50% pairwise acc', '80% pairwise acc',
-        'Medain velocity at least 3pts', 'Largest deviation from end-to-end line', '20% dev. from end-to-end line', '50% dev. from end-to-end line',
-        '80% dev. from end-to-end line', 'Average direction', 'Length of trajectory', 'Ratio end-to-end dist. and length of trajectory',
-        'Average velocity', 'Medain acceleration at first 5pts', 'Mid-Stroke pressure', 'Mid-Stroke area covered', 'Mid-Stroke finger orientation',
-        'change of finger orientation', 'Phone orientation']
+#np.set_printoptions(precision=34, suppress=True)
 
-batch_size = 25   #amount of data that's gonna be loaded in
+print(FNdataset.head())     #prints out the table
+#print(FNdataset.dtypes)     #prints out the top/label and the type
 
-#this will load and slice data for me
-#creating our dataset
-def get_dataset(filename, **kwargs):
-  file_dataset = tf.contrib.data.make_csv_dataset(
-      filename,
-      batch_size,
-      column_names = column_names,
-      na_values="?",
-      num_epochs=1,
-      ignore_errors=True,
-      **kwargs)
-  return dataset
 
-raw_train_data = get_dataset(filename)
-raw_test_data = get_dataset(filename)
 
-#show how the data set
-def show_batch(dataset):
-  for batch, label in dataset.take(1):
-    for key, values in batch.items():
-      print("{:20s} :  {}".format(key, value.numpy()))
-  
-  show_batch(raw_train_data)
+train, test = train_test_split(FNdataset, test_size=0.2)
+print(len(train), 'train example')    #16926
+print(len(test), 'test example')      # 4232
+
+
+""" Creating an input pipeline using tf.data """
+#A utility method to create a tf.data dataset from a Pandas Dataframe
+def df_to_dataset(FNdataset, shuffle=True, batch_size=34):
+  FNdataset = FNdataset.copy()
+  lables = FNdataset.pop()                                              #suppose to have 'target' but gettign errors
+  ds = tf.data.Dataset.from_tensor_slices((dict(FNdataset), lables))
+  if shuffle:
+    ds = ds.shuffle(buffer_size=len(FNdataset))
+  ds = ds.batch(batch_size)
+  return ds
+
+batch_size = 5
+train_ds = df_to_dataset(train, batch_size=batch_size)
+test_ds = df_to_dataset(test, shuffle=False, batch_size=batch_size)
+
+
+""" Printing and testing the Pipeline"""
+for feature_batch, label_batch in train_ds.take(1):
+  print('Every feature:', list(feature_batch.keys()))
+  print('A batch of User_ID:', feature_batch['User_ID'])
+  print('A batch of targets:', label_batch)
