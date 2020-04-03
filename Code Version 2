@@ -11,21 +11,67 @@ files.upload()
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 
-import tensorflow as tf
-import pandas as pd
+import functools
 
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+
+'''
+https://www.tensorflow.org/tutorials/load_data/pandas_dataframe
+'''
+
+#34 columns and 21158 rows for 41 users
 CSV_COLUMN_NAMES = ['User_ID', 'Doc_ID', 'inter-stroke time', 'stroke duration', 'Start X', 'Start Y', 'Stop X', 'Stop Y',
                 'Direct end-to-end distance', 'Mean resultant length', 'WASD Flag', 'Direction of end-to-end line', 'Phone_ID',
-                '20% pairwise velocity', '50% pairwise velocity', '80% pairwise velocity', '20% pairwise acc', '50% pairwise acc', '80% pairwise acc',
-                'Medain velocity at least 3pts', 'Largest deviation from end-to-end line', '20% dev from end-to-end line', '50% dev from end-to-end line',
-                '80% dev from end-to-end line', 'Average direction', 'Length of trajectory', 'Ratio end-to-end dist and length of trajectory',
+                '20 per pairwise velocity', '50 per pairwise velocity', '80 per pairwise velocity', '20 per pairwise acc', '50 per pairwise acc', '80 per pairwise acc',
+                'Medain velocity at least 3pts', 'Largest deviation from end-to-end line', '20 per dev line', '50 per dev line',
+                '80 per dev line', 'Average direction', 'Length of trajectory', 'Ratio dist and length of trajectory',
                 'Average velocity', 'Medain acceleration at first 5pts', 'Mid-Stroke pressure', 'Mid-Stroke area covered', 'Mid-Stroke finger orientation',
-                'change of finger orientation', 'Phone orientation']
+                'Change of finger orientation', 'Phone orientation']
 
-train = pd.read_csv("featMatVersion2_3.csv")
-test = pd.read_csv("featMatVersion2_3.csv")
+tf.keras.backend.set_floatx('float64')
 
+train = pd.read_csv("featMatVersion2_5.csv")
+test = pd.read_csv("featMatVersion2_5.csv")
 
-
-#print the table
 print(train.head())
+print(test.head())
+
+
+#print out the lables/column and there datatype
+train.dtypes
+
+
+target = train.pop('Phone orientation')
+dataset = tf.data.Dataset.from_tensor_slices((train.values, target.values))
+
+
+#print out a few row and the data
+for feat, targ in dataset.take(5):
+  print ('Features: {}, Target: {}'.format(feat, targ))
+
+
+#show you information about a certain column
+tf.constant(train['Doc_ID'])
+
+
+train_dataset = dataset.shuffle(len(train)).batch(1)
+
+
+#create and train a model
+def get_compiled_model():
+  model = tf.keras.Sequential([
+    tf.keras.layers.Dense(10, activation='relu'),
+    tf.keras.layers.Dense(10, activation='relu'),
+    tf.keras.layers.Dense(1)
+  ])
+
+  model.compile(optimizer='adam',
+                loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                metrics=['accuracy'])
+  return model
+  
+  
+model = get_compiled_model()
+model.fit(train_dataset, epochs=15)
