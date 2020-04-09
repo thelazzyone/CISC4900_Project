@@ -1,0 +1,9 @@
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import tensorflow as tf
+
+import os
+print(os.listdir(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900"))         #print out what's in the file/directory
+
+train = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\Train_featMat.csv")
+test = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\featMatVersion2_5.csv")
