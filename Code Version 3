@@ -7,3 +7,21 @@ print(os.listdir(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900"))         #print o
 
 train = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\Train_featMat.csv")
 test = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\featMatVersion2_5.csv")
+
+
+#print
+train.head()
+
+#describe the column
+train.describe()
+
+#print out the lables/column and there datatype
+train.dtypes
+
+
+#prints the selected columns
+train_knn = train[['User_ID', 'Doc_ID', 'Phone_ID', 'Ratio dist and length of trajectory', 'Average velocity', 'Phone orientation']]
+train_knn.head()
+
+#display the dtype of the select column
+train_knn.dtypes
