@@ -1,19 +1,24 @@
-'''
-Using the code from this site for the base since it works,
-However there is an error with the 'fit()'.
-
-https://stackabuse.com/k-nearest-neighbors-algorithm-in-python-and-scikit-learn/
-'''
-
-
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import tensorflow as tf
 
+'''
+https://stackabuse.com/k-nearest-neighbors-algorithm-in-python-and-scikit-learn/
+
+Test:
+    Before edit: 4231 rows × 34 columns
+    After edit: 4168 rows × 34 columns
+
+Train:
+    Before edit: 16927 rows × 34 columns
+    After edit: 16680 rows × 34 columns
+
+'''
+
 import os
 print(os.listdir(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900"))         #print out what's in the file/directory
 
-train = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\Train_featMat.csv")
+train = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\Train_featMat_Clean.csv")
 test = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\featMatVersion2_5.csv")
 
 
