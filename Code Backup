@@ -16,17 +16,20 @@ https://codekarim.com/node/32
 
 import os
 print(os.listdir(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900"))         #print out what's in the file/directory
-
 train = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\Test_featMat_Clean.csv")
+
 
 train.head()
 
 
 #prints how many there are in 'Doc_ID'
 train['Doc_ID'].value_counts()
+
+#prints the columns
 train.columns
 
 
+#specifying which columns to use for X
 X = train[['User_ID', 'Inter-Stroke time', 'Stroke Duration', 'Start X',
        'Start Y', 'Stop X', 'Sop Y', 'Direct end-to-end Distance',
        'Mean resulant length', 'WSAD Flag', 'Direction of end-to-end Time',
@@ -44,7 +47,7 @@ X = train[['User_ID', 'Inter-Stroke time', 'Stroke Duration', 'Start X',
 X[0:10]
 
 
-#lables
+#specifying which columns to use for y or for the lable
 y = train['Doc_ID'].values
 y[0:10]
 
