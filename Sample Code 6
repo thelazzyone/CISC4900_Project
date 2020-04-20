@@ -1,0 +1,115 @@
+import itertools
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.ticker import NullFormatter
+import pandas as pd
+import numpy as np
+import matplotlib.ticker as ticker
+from sklearn import preprocessing
+%matplotlib inline
+
+'''
+https://codekarim.com/node/32
+'''
+
+import os
+print(os.listdir(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900"))         #print out what's in the file/directory
+
+train = pd.read_csv(r"C:\Users\eddie\OneDrive\Desktop\CISC 4900\Test_featMat_Clean.csv")
+
+train.head()
+
+
+#prints how many there are in 'Doc_ID'
+train['Doc_ID'].value_counts()
+train.columns
+
+
+X = train[['User_ID', 'Inter-Stroke time', 'Stroke Duration', 'Start X',
+       'Start Y', 'Stop X', 'Sop Y', 'Direct end-to-end Distance',
+       'Mean resulant length', 'WSAD Flag', 'Direction of end-to-end Time',
+       'Phone_ID', '20 per pairwise velocity', '50 per pairwise velocity',
+       '80 per pairwise velocity', '20 per pairwise acc',
+       '50 per pairwise acc', '80 per pairwise acc',
+       'Median velocity at last 3pts',
+       'Largest deviation from end-to-end line', '20 per dev line',
+       '50 per dev line', '80 per dev line', 'Average Direction',
+       'Length of Trajectory', 'Ratio dist and length of trajectory',
+       'Average velocity', 'Median acceleration at first 5 pts',
+       'Mid-Stroke pressure', 'Mid-Stroke area covered',
+       'Mid-Stroke finger orientation', 'Change of finger orientation',
+       'Phone orientation']].values
+X[0:10]
+
+
+#lables
+y = train['Doc_ID'].values
+y[0:10]
+
+
+#Normalize Data
+X = preprocessing.StandardScaler().fit(X).transform(X.astype(float))
+X[0:5]
+
+
+
+'''
+K nearest neighbor (KNN)
+'''
+from sklearn.neighbors import KNeighborsClassifier
+
+#Training
+k = 4         #starting with 4
+#Train Model and Predict  
+neigh = KNeighborsClassifier(n_neighbors = k).fit(X_train,y_train)
+neigh
+
+
+#Predicting
+yhat = neigh.predict(X_test)
+yhat[0:5]
+
+
+#Accuacy Evaluation
+from sklearn import metrics
+print("Train set Accuracy: ", metrics.accuracy_score(y_train, neigh.predict(X_train)))
+print("Test set Accuracy: ", metrics.accuracy_score(y_test, yhat))
+
+
+
+'''
+
+
+
+'''
+
+#Testing with other K values to see which one is the best
+Ks = 10
+mean_acc = np.zeros((Ks-1))
+std_acc = np.zeros((Ks-1))
+ConfustionMx = [];
+for n in range(1,Ks):
+    
+    #Train Model and Predict  
+    neigh = KNeighborsClassifier(n_neighbors = n).fit(X_train,y_train)
+    yhat=neigh.predict(X_test)
+    mean_acc[n-1] = metrics.accuracy_score(y_test, yhat)
+
+    
+    std_acc[n-1]=np.std(yhat==y_test)/np.sqrt(yhat.shape[0])
+
+mean_acc
+
+
+#plotting the result in a graph
+plt.plot(range(1,Ks),mean_acc,'g')
+plt.fill_between(range(1,Ks),mean_acc - 1 * std_acc,mean_acc + 1 * std_acc, alpha=0.10)
+plt.legend(('Accuracy ', '+/- 3xstd'))
+plt.ylabel('Accuracy ')
+plt.xlabel('Number of Nabors (K)')
+plt.tight_layout()
+
+
+
+print( "The best accuracy was with", mean_acc.max(), "with k=", mean_acc.argmax()+1) 
+plt.show()
