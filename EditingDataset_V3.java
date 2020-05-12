@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 public class EditingDataset_V3 {
 		//new lables
-		static String X = "User_ID1,Doc_ID1,Inter-Stroke time1,Stroke Duration1,Start X1,Start Y1,Stop X1,Sop Y1,"
+		static String X = "User_ID1,Doc_ID1,Inter-Stroke time1,Stroke Duration1,Start X1,Start Y1,Stop X1,Stop Y1,"
 				+ "			Direct end-to-end Distance1,Mean resulant length1,WSAD Flag1,Direction of end-to-end Time1,"
 				+ "			Phone_ID1,20 per pairwise velocity1,50 per pairwise velocity1,80 per pairwise velocity1,"
 				+ "			20 per pairwise acc1,50 per pairwise acc1,80 per pairwise acc1,Median velocity at last 3pts1,"
@@ -20,7 +20,7 @@ public class EditingDataset_V3 {
 				+ "			Median acceleration at first 5 pts1,Mid-Stroke pressure1,Mid-Stroke area covered1,"
 				+ "			Mid-Stroke finger orientation1,Change of finger orientation1,Phone orientation1";
 		
-		static String Y = "User_ID2,Doc_ID2,Inter-Stroke time2,Stroke Duration2,Start X2,Start Y2,Stop X2,Sop Y2,"
+		static String Y = "User_ID2,Doc_ID2,Inter-Stroke time2,Stroke Duration2,Start X2,Start Y2,Stop X2,Stop Y2,"
 				+ "			Direct end-to-end Distance2,Mean resulant length2,WSAD Flag2,Direction of end-to-end Time2,"
 				+ "			Phone_ID2,20 per pairwise velocity2,50 per pairwise velocity2,80 per pairwise velocity2,"
 				+ "			20 per pairwise acc2,50 per pairwise acc2,80 per pairwise acc2,Median velocity at last 3pts2,"
