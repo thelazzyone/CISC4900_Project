@@ -36,14 +36,14 @@ public class EditingDataset_V3 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		String filepath = "C:\\Users\\eddie\\eclipse-workspace\\Remember Java\\src\\EditingCSVFile\\featMatVersion2_8.csv";
+		String filepath = "C:\\Users\\eddie\\eclipse-workspace\\Remember Java\\src\\EditingCSVFile\\featMatVersion2_10.csv";
 		
 		editRecord(filepath);
 
 	}
 	
 	public static void editRecord(String filepath) {
-		String tempFile = "C:\\Users\\eddie\\eclipse-workspace\\Remember Java\\src\\EditingCSVFile\\DataSet_V3.csv";
+		String tempFile = "C:\\Users\\eddie\\eclipse-workspace\\Remember Java\\src\\EditingCSVFile\\DataSet_V4.csv";
 		
 		try {
 			//read each line and combine 2 at a time
